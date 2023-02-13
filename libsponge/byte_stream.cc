@@ -1,4 +1,5 @@
 #include "byte_stream.hh"
+
 #include <algorithm>
 // Dummy implementation of a flow-controlled in-memory byte stream.
 
@@ -8,11 +9,11 @@
 // You will need to add private members to the class declaration in `byte_stream.hh`
 
 template <typename... Targs>
-void DUMMY_CODE(Targs &&... /* unused */) {}
+void DUMMY_CODE(Targs &&.../* unused */) {}
 
 using namespace std;
 
-ByteStream::ByteStream(const size_t capacity) : _capacity(capacity) { }
+ByteStream::ByteStream(const size_t capacity) : _capacity(capacity) {}
 
 size_t ByteStream::write(const string &data) {
     if (_input_end)
@@ -30,7 +31,7 @@ string ByteStream::peek_output(const size_t len) const {
 }
 
 //! \param[in] len bytes will be removed from the output side of the buffer
-void ByteStream::pop_output(const size_t len) { 
+void ByteStream::pop_output(const size_t len) {
     size_t pop_len = min(len, _buffer.size());
     _read_count += pop_len;
     while (pop_len--) {
