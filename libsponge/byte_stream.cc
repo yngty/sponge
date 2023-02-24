@@ -18,10 +18,10 @@ ByteStream::ByteStream(const size_t capacity) : _capacity(capacity) {}
 size_t ByteStream::write(const string &data) {
     if (_input_end)
         return 0;
-    const size_t write_size = min(data.length(), _capacity - _buffer.size());
-    _write_count += write_size;
-    std::copy_n(data.begin(), write_size, std::back_inserter(_buffer));
-    return write_size;
+    const size_t realWrite = min(data.length(), remaining_capacity());
+    _write_bytes += realWrite;
+    std::copy_n(data.begin(), realWrite, std::back_inserter(_buffer));
+    return realWrite;
 }
 
 //! \param[in] len bytes will be copied from the output side of the buffer
@@ -33,7 +33,7 @@ string ByteStream::peek_output(const size_t len) const {
 //! \param[in] len bytes will be removed from the output side of the buffer
 void ByteStream::pop_output(const size_t len) {
     size_t pop_len = min(len, _buffer.size());
-    _read_count += pop_len;
+    _read_bytes += pop_len;
     while (pop_len--) {
         _buffer.pop_front();
     }
@@ -58,8 +58,8 @@ bool ByteStream::buffer_empty() const { return _buffer.empty(); }
 
 bool ByteStream::eof() const { return _buffer.empty() && _input_end; }
 
-size_t ByteStream::bytes_written() const { return _write_count; }
+size_t ByteStream::bytes_written() const { return _write_bytes; }
 
-size_t ByteStream::bytes_read() const { return _read_count; }
+size_t ByteStream::bytes_read() const { return _read_bytes; }
 
 size_t ByteStream::remaining_capacity() const { return _capacity - _buffer.size(); }

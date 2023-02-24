@@ -13,8 +13,8 @@ class ByteStream {
     // Your code here -- add private members as necessary.
     const size_t _capacity;
     std::deque<char> _buffer{};
-    size_t _read_count{0};
-    size_t _write_count{0};
+    size_t _read_bytes{0};
+    size_t _write_bytes{0};
     bool _input_end{false};
 
     // Hint: This doesn't need to be a sophisticated data structure at
